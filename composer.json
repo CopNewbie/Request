@@ -1,0 +1,17 @@
+{
+    "name": "rduuke/request",
+    "description": "\u0016HTTP Requests",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "RDuuke",
+            "email": "juuanduuke@gmail.com"
+        }
+    ],
+    "autoload" : {
+        "psr-4" : {
+            "RDuuke\\Request\\": "src/"
+        }
+    },
+    "require": {}
+}
