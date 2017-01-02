@@ -4,6 +4,8 @@
 namespace RDuuke\Request;
 
 
+use Traversable;
+
 class ParameterBox implements \Countable
 {
 
@@ -44,4 +46,5 @@ class ParameterBox implements \Countable
     {
         return count($this->parameters);
     }
+
 }

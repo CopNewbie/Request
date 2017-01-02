@@ -15,20 +15,24 @@ class Request
 
     public $server;
 
+    public $file;
+
     protected $method;
 
     private static $requestFactory;
 
-    public function __construct(array $query = [], array $request = [], array $server = [])
+    public function __construct(array $query = [], array $request = [], array $server = [], array $files = [])
     {
-        $this->initialize($query, $request, $server);
+        $this->initialize($query, $request, $server, $files);
     }
 
-    public function initialize(array $query = [], array $request =[], array $server =[])
+    public function initialize(array $query = [], array $request =[], array $server =[], array $files =[])
     {
         $this->query = new ParameterBox($query);
         $this->requets = new ParameterBox($request);
         $this->server = new ParameterBox($server);
+        $this->file = new FileBox($files);
+        
     }
     public static function createFromGlobals()
     {
@@ -42,7 +46,7 @@ class Request
             }
         }
 
-        $request = self::createRequestFromFactory($_GET, $_POST, $_SERVER);
+        $request = self::createRequestFromFactory($_GET, $_POST, $_SERVER, $_FILES);
 
         return $request;
     }
@@ -67,11 +71,12 @@ class Request
     private function createRequestFromFactory(
         array $query = [],
         array $request = [],
-        array $server = [])
+        array $server = [],
+        array $files = [])
     {
         if (self::$requestFactory)
         {
-            $request = call_user_func(self::$requestFactory, $query, $request, $server);
+            $request = call_user_func(self::$requestFactory, $query, $request, $server, $files);
 
             if (! $request instanceof self) {
                 throw new \Exception('Error in Request Factory');
@@ -80,8 +85,7 @@ class Request
             return $request;
         }
 
-        return new static($query, $request, $server);
+        return new static($query, $request, $server, $files);
     }
-
 
 }
